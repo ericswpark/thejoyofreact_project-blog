@@ -1,30 +1,26 @@
-'use client';
-import React from 'react';
-import clsx from 'clsx';
-import { motion } from 'framer-motion';
-import { range } from '@/utils';
-import Card from '@/components/Card';
-import SliderControl from '@/components/SliderControl';
+"use client";
+import React from "react";
+import clsx from "clsx";
+import { motion } from "framer-motion";
+import { range } from "@/utils";
+import Card from "@/components/Card";
+import SliderControl from "@/components/SliderControl";
 
-import Equation from './Equation';
-import styles from './DivisionGroupsDemo.module.css';
+import Equation from "./Equation";
+import styles from "./DivisionGroupsDemo.module.css";
 
 function DivisionGroupsDemo({
   numOfItems = 12,
   initialNumOfGroups = 1,
   includeRemainderArea,
 }) {
-  const [numOfGroups, setNumOfGroups] = React.useState(
-    initialNumOfGroups
-  );
+  const id = React.useId();
 
-  const numOfItemsPerGroup = Math.floor(
-    numOfItems / numOfGroups
-  );
+  const [numOfGroups, setNumOfGroups] = React.useState(initialNumOfGroups);
 
-  const remainder = includeRemainderArea
-    ? numOfItems % numOfGroups
-    : null;
+  const numOfItemsPerGroup = Math.floor(numOfItems / numOfGroups);
+
+  const remainder = includeRemainderArea ? numOfItems % numOfGroups : null;
 
   // When we're splitting into 1-3 groups, display side-by-side
   // columns. When we get to 4, it should switch to a 2x2 grid.
@@ -34,8 +30,8 @@ function DivisionGroupsDemo({
           gridTemplateColumns: `repeat(${numOfGroups}, 1fr)`,
         }
       : {
-          gridTemplateColumns: '1fr 1fr',
-          gridTemplateRows: '1fr 1fr',
+          gridTemplateColumns: "1fr 1fr",
+          gridTemplateRows: "1fr 1fr",
         };
 
   return (
@@ -48,24 +44,22 @@ function DivisionGroupsDemo({
           min={1}
           max={4}
           value={numOfGroups}
-          onChange={(ev) =>
-            setNumOfGroups(Number(ev.target.value))
-          }
+          onChange={(ev) => setNumOfGroups(Number(ev.target.value))}
         />
       </header>
 
       <div className={styles.demoWrapper}>
-        <div
-          className={clsx(styles.demoArea)}
-          style={gridStructure}
-        >
+        <div className={clsx(styles.demoArea)} style={gridStructure}>
           {range(numOfGroups).map((groupIndex) => (
             <div key={groupIndex} className={styles.group}>
               {range(numOfItemsPerGroup).map((index) => {
+                const item_index_string = `${id}-${
+                  groupIndex * numOfItemsPerGroup + index
+                }`;
                 return (
                   <motion.div
-                    layoutId={groupIndex * numOfItemsPerGroup + index}
-                    key={groupIndex * numOfItemsPerGroup + index}
+                    layoutId={item_index_string}
+                    key={item_index_string}
                     className={styles.item}
                   />
                 );
@@ -77,13 +71,16 @@ function DivisionGroupsDemo({
 
       {includeRemainderArea && (
         <div className={styles.remainderArea}>
-          <p className={styles.remainderHeading}>
-            Remainder Area
-          </p>
+          <p className={styles.remainderHeading}>Remainder Area</p>
 
           {range(remainder).map((index) => {
+            const item_index_string = `${id}-${numOfItems - index - 1}`;
             return (
-              <motion.div key={index} className={styles.item} />
+              <motion.div
+                layoutId={item_index_string}
+                key={item_index_string}
+                className={styles.item}
+              />
             );
           })}
         </div>
