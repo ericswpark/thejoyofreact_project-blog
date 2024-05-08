@@ -16,7 +16,6 @@ const COLORS = [
 ];
 
 function CircularColorsDemo() {
-  // TODO: This value should increase by 1 every second:
   const [timeElapsed, setTimeElapsed] = React.useState(0);
   const [isPlaying, setIsPlaying] = React.useState(false);
 
