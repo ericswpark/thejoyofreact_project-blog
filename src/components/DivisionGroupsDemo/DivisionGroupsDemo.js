@@ -1,7 +1,7 @@
 'use client';
 import React from 'react';
 import clsx from 'clsx';
-
+import { motion } from 'framer-motion';
 import { range } from '@/utils';
 import Card from '@/components/Card';
 import SliderControl from '@/components/SliderControl';
@@ -63,8 +63,9 @@ function DivisionGroupsDemo({
             <div key={groupIndex} className={styles.group}>
               {range(numOfItemsPerGroup).map((index) => {
                 return (
-                  <div
-                    key={index}
+                  <motion.div
+                    layoutId={groupIndex * numOfItemsPerGroup + index}
+                    key={groupIndex * numOfItemsPerGroup + index}
                     className={styles.item}
                   />
                 );
@@ -82,7 +83,7 @@ function DivisionGroupsDemo({
 
           {range(remainder).map((index) => {
             return (
-              <div key={index} className={styles.item} />
+              <motion.div key={index} className={styles.item} />
             );
           })}
         </div>
