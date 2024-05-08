@@ -1,11 +1,21 @@
-import React from 'react';
+import React from "react";
 
-import BlogHero from '@/components/BlogHero';
+import BlogHero from "@/components/BlogHero";
 
-import { MDXRemote } from 'next-mdx-remote/rsc';
+import { MDXRemote } from "next-mdx-remote/rsc";
 
-import styles from './postSlug.module.css';
-import { loadBlogPost } from '@/helpers/file-helpers';
+import styles from "./postSlug.module.css";
+import { loadBlogPost } from "@/helpers/file-helpers";
+import { BLOG_TITLE } from "@/constants";
+
+export async function generateMetadata({ params }) {
+  const post = await loadBlogPost(params.postSlug);
+
+  return {
+    title: `${post.frontmatter.title} • ${BLOG_TITLE}`,
+    description: post.frontmatter.abstract,
+  };
+}
 
 async function BlogPost({ params }) {
   const post = await loadBlogPost(params.postSlug);
@@ -21,7 +31,6 @@ async function BlogPost({ params }) {
       </div>
     </article>
   );
-
 }
 
 export default BlogPost;
